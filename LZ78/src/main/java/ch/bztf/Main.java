@@ -9,8 +9,10 @@ public class Main {
 
         System.out.println("LZ78 Generator");
         System.out.print("Bitte geben Sie ein Wort ein: ");
-        String word = scan.nextLine();
-        System.out.println("Dieser String wird in den folgenden Zahlen gesendet: " + Converter.convertToLZ78(word));
+        // String word = scan.nextLine();
+        LZ78 lz = Converter.convertToLZ78("baumsaumraum");
+        System.out.println("Dictionary: " + lz.getDictionary());
+        System.out.println("Code: " + lz.getCode());
         
         
     }
