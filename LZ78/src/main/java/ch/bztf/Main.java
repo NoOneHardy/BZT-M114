@@ -11,5 +11,7 @@ public class Main {
         System.out.print("Bitte geben Sie ein Wort ein: ");
         String word = scan.nextLine();
         System.out.println("Dieser String wird in den folgenden Zahlen gesendet: " + Converter.convertToLZ78(word));
+        
+        
     }
 }
