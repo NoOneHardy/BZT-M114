@@ -1,51 +1,51 @@
 package ch.bztf;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class Converter {
-    private static LZ78 lz;
+
+
     public static LZ78 convertToLZ78(String data) {
-        lz = new LZ78();
-        String lastWord = "";
-        String currentWord;
+        LZ78 lz = new LZ78();
+        lz.generateDictionary(data);
 
-        // TODO: Prozess beginnt am Anfang des data Strings/
+        StringBuilder lastWord = new StringBuilder();
+
         for (int i = 0; i < data.length(); i++) {
-            // Aktuelles Wort auslesen
-            currentWord = String.valueOf(data.charAt(i)).toLowerCase();
-            // Falls das aktuelle Wort noch nicht bekannt ist
-            if (!lz.getDictionary().containsKey(currentWord)) {
-                // Das aktuelle Wort ins Wörterbuch hinzufügen
-                addToDictionary(currentWord);
-                // Das letzte Wort mit dem aktuellen Wort im Wörterbuch speichern
-                if (!lastWord.isEmpty()) {
-                    addToDictionary(lastWord + currentWord);
-                }
+            String currentWord = String.valueOf(data.charAt(i)).toLowerCase();
 
-                // Das letzte Wort als das aktuelle setzen
-                lastWord = currentWord;
-                addToCode(currentWord);
+            if (lastWord.isEmpty()) {
+                lastWord = new StringBuilder(currentWord);
                 continue;
             }
-            // TODO
-            lastWord += currentWord;
-            boolean isNewWordFound = false;
-            while (!isNewWordFound) {
-                if (!lz.getDictionary().containsKey(lastWord)) {
-                    isNewWordFound = true;
-                    addToDictionary(lastWord);
-                    addToCode(lastWord);
+
+            if (!lz.getDictionary().containsKey(lastWord + currentWord)) {
+                lz.addToDictionary(lastWord + currentWord);
+                lz.addToCode(lastWord.toString());
+                lastWord = new StringBuilder(currentWord);
+                if (i == data.length() - 1) {
+                    lz.addToCode(lastWord.toString());
                 }
+                continue;
             }
 
+            lastWord.append(currentWord);
+
+            if (i == data.length() - 1) {
+                lz.addToCode(lastWord.toString());
+            }
         }
         return lz;
-
     }
 
-    public static void addToDictionary(String currentWord) {
-        lz.getDictionary().put(currentWord, lz.getDictionary().size());
-    }
+    public static String convertFromLZ78(LZ78 data) {
+        StringBuilder sb = new StringBuilder();
 
-    public static void addToCode(String currentWord) {
-        lz.getCode().add(lz.getDictionary().get(currentWord));
+        HashMap<Integer, String> dictionary = data.switchDictionary();
+        for (int bit : data.getCode()) {
+            sb.append(dictionary.get(bit));
+        }
+        return sb.toString();
     }
 }
