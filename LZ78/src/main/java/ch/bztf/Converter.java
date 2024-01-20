@@ -1,53 +1,51 @@
 package ch.bztf;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Converter {
 
+
     public static LZ78 convertToLZ78(String data) {
-        LZ78 lz78 = new LZ78();
-        String lastWord = "";
-        String currentWord = "";
-        String wordTogether;
-        int dictionaryCounter = 1;
-        int numberStorage = 0;
+        LZ78 lz = new LZ78();
+        lz.generateDictionary(data);
 
-        HashMap<String, Integer> dictionary = lz78.getDictionary();
-        ArrayList<Integer> result = lz78.getResult();
+        StringBuilder lastWord = new StringBuilder();
 
         for (int i = 0; i < data.length(); i++) {
-            if (!dictionary.containsKey(String.valueOf(data.charAt(i)))){
-                dictionary.put(String.valueOf(data.charAt(i)),dictionaryCounter);
-                dictionaryCounter++;
+            String currentWord = String.valueOf(data.charAt(i)).toLowerCase();
+
+            if (lastWord.isEmpty()) {
+                lastWord = new StringBuilder(currentWord);
+                continue;
+            }
+
+            if (!lz.getDictionary().containsKey(lastWord + currentWord)) {
+                lz.addToDictionary(lastWord + currentWord);
+                lz.addToCode(lastWord.toString());
+                lastWord = new StringBuilder(currentWord);
+                if (i == data.length() - 1) {
+                    lz.addToCode(lastWord.toString());
+                }
+                continue;
+            }
+
+            lastWord.append(currentWord);
+
+            if (i == data.length() - 1) {
+                lz.addToCode(lastWord.toString());
             }
         }
-
-        // TODO: Prozess beginnt am Anfang des data Strings/
-        for (int i = 0; i < data.length(); i++) {
-            currentWord = String.valueOf(data.toLowerCase().charAt(i));
-            wordTogether = lastWord + currentWord;
-            if (dictionary.containsKey(wordTogether)) {
-                numberStorage = dictionary.get(wordTogether);
-                lastWord = wordTogether;
-            }
-
-            else {
-                if (numberStorage != 0){
-                    dictionary.put(wordTogether, dictionaryCounter);
-                    dictionaryCounter++;
-                    result.add(numberStorage);
-                    lastWord = currentWord;
-                }
-                else {
-                    numberStorage++;
-                }
-
-            }
-        }
-
-        return lz78;
+        return lz;
     }
 
-    
+    public static String convertFromLZ78(LZ78 data) {
+        StringBuilder sb = new StringBuilder();
+
+        HashMap<Integer, String> dictionary = data.switchDictionary();
+        for (int bit : data.getCode()) {
+            sb.append(dictionary.get(bit));
+        }
+        return sb.toString();
+    }
 }
