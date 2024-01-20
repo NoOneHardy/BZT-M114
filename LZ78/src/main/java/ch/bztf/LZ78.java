@@ -8,6 +8,8 @@ public class LZ78 {
     private final HashMap<String, Integer> dictionary = new HashMap<>();
     private final ArrayList<Integer> code = new ArrayList<>();
 
+    private String wordFromData = "";
+
     public LZ78() {
     }
 
@@ -52,6 +54,7 @@ public class LZ78 {
     }
 
     public void generateDictionary(String word) {
+        wordFromData = word;
         for (char ch : word.toCharArray()) {
             if (!dictionary.containsKey(String.valueOf(ch))) {
                 addToDictionary(String.valueOf(ch));
@@ -65,5 +68,22 @@ public class LZ78 {
 
     public void addToCode(String currentWord) {
         code.add(dictionary.get(currentWord));
+    }
+
+    public int getOriginalLength(){
+        return wordFromData.length();
+    }
+
+    public int getCodeLength(){
+        return code.size();
+    }
+
+    public int getDictionaryLength(){
+        return dictionary.size();
+    }
+
+    public double getSavedStorage(){
+
+        return  Math.round(100*(1- (((double) code.size() + (double) dictionary.size()) / (double) wordFromData.length())));
     }
 }

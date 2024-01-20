@@ -13,6 +13,10 @@ public class Main {
         LZ78 lz = Converter.convertToLZ78(word.toLowerCase());
         System.out.println("Dictionary:\n" + lz.formatDictionary());
         System.out.println("Code: " + lz.getCode());
+        System.out.println("Länge der Ursprungsnachricht: " + lz.getOriginalLength());
+        System.out.println("Länge des Codes: " + lz.getCodeLength());
+        System.out.println("Länge des Dictionarys: " + lz.getDictionaryLength());
+        System.out.println("Theoretische Einsparung: " + lz.getSavedStorage() + "%");
         System.out.println();
         System.out.print("Möchten Sie die verschlüsselte Nachricht entschlüsseln? (j/N) ");
         String answer = scan.nextLine();
