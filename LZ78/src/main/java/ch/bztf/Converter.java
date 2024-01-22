@@ -1,7 +1,6 @@
 package ch.bztf;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Converter {
 
@@ -13,7 +12,7 @@ public class Converter {
         StringBuilder lastWord = new StringBuilder();
 
         for (int i = 0; i < data.length(); i++) {
-            String currentWord = String.valueOf(data.charAt(i)).toLowerCase();
+            String currentWord = String.valueOf(data.charAt(i)); //.toLowerCase();
 
             if (lastWord.isEmpty()) {
                 lastWord = new StringBuilder(currentWord);
@@ -29,9 +28,7 @@ public class Converter {
                 }
                 continue;
             }
-
             lastWord.append(currentWord);
-
             if (i == data.length() - 1) {
                 lz.addToCode(lastWord.toString());
             }

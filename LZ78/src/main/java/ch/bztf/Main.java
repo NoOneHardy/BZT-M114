@@ -1,6 +1,5 @@
 package ch.bztf;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -10,7 +9,7 @@ public class Main {
         System.out.println("LZ78 Generator");
         System.out.print("Bitte geben Sie ein Wort ein: ");
         String word = scan.nextLine();
-        LZ78 lz = Converter.convertToLZ78(word.toLowerCase());
+        LZ78 lz = Converter.convertToLZ78(word);
         System.out.println("Dictionary:\n" + lz.formatDictionary());
         System.out.println("Code: " + lz.getCode());
         System.out.println("Länge der Ursprungsnachricht: " + lz.getOriginalLength());

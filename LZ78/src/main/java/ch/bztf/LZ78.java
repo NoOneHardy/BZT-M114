@@ -83,7 +83,6 @@ public class LZ78 {
     }
 
     public double getSavedStorage(){
-
         return  Math.round(100*(1- (((double) code.size() + (double) dictionary.size()) / (double) wordFromData.length())));
     }
 }
